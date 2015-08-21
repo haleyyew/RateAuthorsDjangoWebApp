@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'RateAuthorsMainApp'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,7 +51,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'personal_proj3.urls'
+ROOT_URLCONF = 'RateAuthors_new_python_project.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'RateAuthors new.wsgi.application'
+WSGI_APPLICATION = 'RateAuthors_new_python_project.wsgi.application'
 
 
 # Database
@@ -101,6 +102,26 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
-)
+# TEMPLATE_PATH = os.path.join(BASE_DIR, 'RateAuthors_new_python_project/../templates')
+#
+# TEMPLATE_DIRS = (
+#     TEMPLATE_PATH,
+# )
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.request',
+                'django.contrib.messages.context_processors.messages',
+
+            ],
+        },
+    },
+]
