@@ -1,0 +1,5 @@
+replace everything in TEMPLATE with
+
+TEMPLATE_DIRS = (
+                '/home/haleyyew/personal_proj3/templates',
+                    )
