@@ -20,18 +20,17 @@
         <script src="https://connect.soundcloud.com/sdk.js"></script>
         <script>
           SC.initialize({
-            client_id: 'YOUR_CLIENT_ID'
+            client_id: '39ede846b4c9880b66be516c1c052a0a'
           });
 
 
         function embed (id) {
-          SC.oEmbed("http://soundcloud.com/" + id // user or playlist to embed
-            , { color: "ff0066"
-              , auto_play: false
-              , maxwidth: 400
-              , maxheight: 200
-              , show_comments: false } // options
-            , document.getElementById("player") // what element to attach player to
+          SC.oEmbed("http://soundcloud.com/" + id
+            , { auto_play: false
+              , maxwidth: 300
+              , maxheight: 150
+              , show_comments: false }
+            , document.getElementById("player")
           );
         }
 
@@ -40,12 +39,25 @@
 
             embed("haoran-yu-4/8jxc3000sdou");
 
+{#            SC.resolve('http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-4&client_id=39ede846b4c9880b66be516c1c052a0a');#}
 
-            SC.get('/tracks', { genres: 'foo' }, function(tracks) {
-                $(tracks).each(function(index, track) {
-                  $('#soundcloud_widget').append($('<li></li>').html(track.title + ' - ' + track.genre));
+{#            SC.get('/resolve', {#}
+{#              url: 'https://soundcloud.com/paulosman'#}
+{#            }, function(user) {#}
+{#              alert(user.id);#}
+{#            });#}
+
+
+
+                var user_id = '168748789';
+                SC.get('/users/168748789/tracks', function(tracks) {
+                    $(tracks).each(function(index, track) {
+{#                        alert(track.title);#}
+                      $('#soundcloud_widget').append($('<li></li>').html(track.title));
+                    });
                 });
-              });
+
+
             });
 
         </script>
