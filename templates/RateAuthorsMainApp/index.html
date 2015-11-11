@@ -45,13 +45,7 @@ var all_tracks = [];
 
         }
 
-{#        function playTrack(url){#}
-{#            alert(url);#}
-{##}
-{#            var embed_track = "haoran-yu-4/8jxc3000sdou";#}
-{#            embed(embed_track);#}
-{#            embed(url);#}
-{#        }#}
+
 
         function sortAndDisplayTracks(all_tracks){
 
@@ -60,14 +54,26 @@ var all_tracks = [];
             });
             $('#soundcloud_widget').html("");
             for (i = 0; i < all_tracks.length; i++) {
-                var g = document.createElement('div');
+                var g = document.createElement('tr');
                 g.id = all_tracks[i].id;
                 g.value = all_tracks[i].permalink_url;
                 g.addEventListener("click", function(){
                     embed(this.value)
                 });
 
-                g.innerHTML = '<li>' + all_tracks[i].title + ' <> ' + all_tracks[i].playback_count + '</li>';
+                var image = document.createElement('img');
+                image.src = all_tracks[i].user.avatar_url;
+                image.height = 12;
+                image.width = 12;
+
+
+                var tmp = document.createElement("div");
+                tmp.appendChild(image);
+
+
+                g.innerHTML = '<td>' + tmp.innerHTML + '</td>'
+                        + '<td>' + all_tracks[i].title + '</td>'
+                        + '<td>' + all_tracks[i].playback_count + '</td>';
                 $('#soundcloud_widget').append(g);
 
             }
@@ -76,21 +82,21 @@ var all_tracks = [];
 
         function loadAllTracks(){
 
-                all_tracks = [];
-                var user_id = '156482012';
-                getTracks(user_id, all_tracks);
+            all_tracks = [];
+            var user_id = '156482012';
+            getTracks(user_id, all_tracks);
 
-                user_id = '157852715';
-                getTracks(user_id, all_tracks);
+            user_id = '157852715';
+            getTracks(user_id, all_tracks);
 
-                user_id = '166255328';
-                getTracks(user_id, all_tracks);
+            user_id = '166255328';
+            getTracks(user_id, all_tracks);
 
-                user_id = '168748789';
-                getTracks(user_id, all_tracks);
+            user_id = '168748789';
+            getTracks(user_id, all_tracks);
 
-                user_id = '177146003';
-                getTracks(user_id, all_tracks);
+            user_id = '177146003';
+            getTracks(user_id, all_tracks);
 
 
         }
@@ -116,6 +122,18 @@ var all_tracks = [];
 
         </script>
 
+        <style>
+
+            td {
+                position: relative;
+            }
+            img {
+                position: absolute;
+              clip: rect(4px, 20px, 20px, 4px);
+            }
+
+
+        </style>
 
 
     </head>
@@ -124,8 +142,10 @@ var all_tracks = [];
         <h1>Hello Raters!</h1>
         Welcome to our rated blog listing! <strong>{{ boldmessage }}</strong><br />
         <div id="player"></div>
+
         <button id="load_tracks" onclick="sortAndDisplayTracks(all_tracks)"  disabled>Load Data</button>
-        <div id = "soundcloud_widget"></div>
+
+        <table id = "soundcloud_widget"></table>
 
 
     </body>
