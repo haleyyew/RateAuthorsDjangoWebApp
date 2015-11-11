@@ -74,19 +74,58 @@
 
             });
 
-
+{#            alert(all_tracks.length);#}
         }
 
         function sortAndDisplayTracks(all_tracks){
             all_tracks.sort(function(a, b) {
                 return b.playback_count - a.playback_count;
             });
-
+            $('#soundcloud_widget').html("");
             for (i = 0; i < all_tracks.length; i++) {
+
                 $('#soundcloud_widget').append($('<li></li>').html(all_tracks[i].title + ' <> ' + all_tracks[i].playback_count));
             }
         }
 
+        function loadAllTracks(){
+                var all_tracks = [];
+
+                var user_id = '156482012';
+                getTracks(user_id, all_tracks);
+{#                alert(all_tracks.length);#}
+
+{#                var allTracks = getTracks (user_id);#}
+{#                sortAndDisplayTracks(allTracks);#}
+
+                user_id = '157852715';
+                getTracks(user_id, all_tracks);
+{#            alert(all_tracks.length);#}
+{#                var secondArray = getTracks (user_id);#}
+{#                firstArray.push.apply(firstArray, secondArray);#}
+
+                user_id = '166255328';
+                getTracks(user_id, all_tracks);
+{#            alert(all_tracks.length);#}
+{#                var thirdArray = getTracks (user_id);#}
+{#                firstArray.push.apply(firstArray, thirdArray);#}
+
+                user_id = '168748789';
+                getTracks(user_id, all_tracks);
+{#            alert(all_tracks.length);#}
+{#                var fourthArray = getTracks (user_id);#}
+{#                firstArray.push.apply(firstArray, fourthArray);#}
+
+                user_id = '177146003';
+                getTracks(user_id, all_tracks);
+{#            alert(all_tracks.length);#}
+{#                firstArray.push.apply(firstArray, fifthArray);#}
+
+
+
+            alert("Load data from soundcloud");
+                sortAndDisplayTracks(all_tracks);
+        }
 
         $(document).ready(function() {
 
@@ -107,39 +146,7 @@
 
 
 
-                var all_tracks = [];
-                var user_id = '156482012';
-                getTracks(user_id, all_tracks);
-                alert(all_tracks.length);
 
-{#                var allTracks = getTracks (user_id);#}
-{#                sortAndDisplayTracks(allTracks);#}
-
-                user_id = '157852715';
-                getTracks(user_id, all_tracks);
-            alert(all_tracks.length);
-{#                var secondArray = getTracks (user_id);#}
-{#                firstArray.push.apply(firstArray, secondArray);#}
-
-                user_id = '166255328';
-                getTracks(user_id, all_tracks);
-            alert(all_tracks.length);
-{#                var thirdArray = getTracks (user_id);#}
-{#                firstArray.push.apply(firstArray, thirdArray);#}
-
-                user_id = '168748789';
-                getTracks(user_id, all_tracks);
-            alert(all_tracks.length);
-{#                var fourthArray = getTracks (user_id);#}
-{#                firstArray.push.apply(firstArray, fourthArray);#}
-
-                user_id = '177146003';
-                getTracks(user_id, all_tracks);
-            alert(all_tracks.length);
-{#                var fifthArray = getTracks (user_id);#}
-{#                firstArray.push.apply(firstArray, fifthArray);#}
-
-                sortAndDisplayTracks(all_tracks);
 
             });
 
@@ -163,6 +170,7 @@
         <h1>Hello Raters!</h1>
         Welcome to our rated blog listing! <strong>{{ boldmessage }}</strong><br />
         <div id="player"></div>
+        <button onclick="loadAllTracks()">Load Data</button>
         <div id = "soundcloud_widget"></div>
 
     </body>
