@@ -34,12 +34,70 @@
           );
         }
 
+        function getTracks (user_id, all_tracks) {
+{#            SC.get('/users/'+user_id+'/tracks', #}
+{#              var all_tracks = [];#}
+              SC.get("/tracks", {
+                  user_id: user_id,
+                  limit: 300
+              },
+                    function (tracks) {
+                $(tracks).each(function (index, track) {
+{#                    var one_track = [track.playback_count, track.title];#}
+
+                    all_tracks.push(track);
+
+{#                    var inserted = false;#}
+
+{#                    if (all_tracks.length == 0) {#}
+{#                        all_tracks.push(one_track);#}
+{#                    } else {#}
+{#                        for (i = 0; i < all_tracks.length; i++) {#}
+{#                            if (all_tracks[i][0] < one_track[0]){#}
+{#                                all_tracks.splice(i, 0, one_track);#}
+{#                                inserted = true;#}
+{#                            }#}
+{#                        }#}
+{##}
+{#                    }#}
+{#                    if (inserted == false){#}
+{#                        all_tracks.push(one_track);#}
+{#                    }#}
+
+
+                });
+
+
+
+{#            sortAndDisplayTracks(all_tracks);#}
+{#            return all_tracks;#}
+
+            });
+
+
+        }
+
+        function sortAndDisplayTracks(all_tracks){
+            all_tracks.sort(function(a, b) {
+                return b.playback_count - a.playback_count;
+            });
+
+            for (i = 0; i < all_tracks.length; i++) {
+                $('#soundcloud_widget').append($('<li></li>').html(all_tracks[i].title + ' <> ' + all_tracks[i].playback_count));
+            }
+        }
+
 
         $(document).ready(function() {
 
-            embed("haoran-yu-4/8jxc3000sdou");
+            var embed_track = "haoran-yu-4/8jxc3000sdou";
+            embed(embed_track);
 
 {#            SC.resolve('http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-4&client_id=39ede846b4c9880b66be516c1c052a0a');#}
+{#http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-1&client_id=cdb96c0de5bb452f0c477463e9d136d0#}
+{#http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-2&client_id=6c36cd7f5817e3b72b337e5f7b2ee27e#}
+{#http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-3&client_id=08c7660800f3ecace978cd8d95525ee6#}
+{#http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-5&client_id=8ce14ba15ee909a358fe1bface79c4b0#}
 
 {#            SC.get('/resolve', {#}
 {#              url: 'https://soundcloud.com/paulosman'#}
@@ -49,14 +107,39 @@
 
 
 
-                var user_id = '168748789';
-                SC.get('/users/168748789/tracks', function(tracks) {
-                    $(tracks).each(function(index, track) {
-{#                        alert(track.title);#}
-                      $('#soundcloud_widget').append($('<li></li>').html(track.title));
-                    });
-                });
+                var all_tracks = [];
+                var user_id = '156482012';
+                getTracks(user_id, all_tracks);
+                alert(all_tracks.length);
 
+{#                var allTracks = getTracks (user_id);#}
+{#                sortAndDisplayTracks(allTracks);#}
+
+                user_id = '157852715';
+                getTracks(user_id, all_tracks);
+            alert(all_tracks.length);
+{#                var secondArray = getTracks (user_id);#}
+{#                firstArray.push.apply(firstArray, secondArray);#}
+
+                user_id = '166255328';
+                getTracks(user_id, all_tracks);
+            alert(all_tracks.length);
+{#                var thirdArray = getTracks (user_id);#}
+{#                firstArray.push.apply(firstArray, thirdArray);#}
+
+                user_id = '168748789';
+                getTracks(user_id, all_tracks);
+            alert(all_tracks.length);
+{#                var fourthArray = getTracks (user_id);#}
+{#                firstArray.push.apply(firstArray, fourthArray);#}
+
+                user_id = '177146003';
+                getTracks(user_id, all_tracks);
+            alert(all_tracks.length);
+{#                var fifthArray = getTracks (user_id);#}
+{#                firstArray.push.apply(firstArray, fifthArray);#}
+
+                sortAndDisplayTracks(all_tracks);
 
             });
 
