@@ -20,8 +20,8 @@
         function embed (url) {
           SC.oEmbed(url
             , { auto_play: true
-              , maxwidth: 300
-              , maxheight: 150
+              , maxwidth: 450
+              , maxheight: 180
               , show_comments: false }
             , document.getElementById("player")
           );
@@ -52,14 +52,58 @@
             all_tracks.sort(function(a, b) {
                 return b.playback_count - a.playback_count;
             });
+
+            displayHeaders();
+            displayAllTracks(all_tracks);
+
+        }
+
+        function sortAndDisplayTracksByDate(all_tracks){
+
+            all_tracks.sort(function (a, b) {
+              if (a.created_at > b.created_at) {
+                return -1;
+              }
+              if (a.created_at < b.created_at) {
+                return 1;
+              }
+              return 0;
+            });
+
+            displayHeaders();
+            displayAllTracks(all_tracks);
+
+        }
+
+        function sortAndDisplayTracksByTitle(all_tracks){
+
+            all_tracks.sort(function (a, b) {
+              if (a.title > b.title) {
+                return -1;
+              }
+              if (a.title < b.title) {
+                return 1;
+              }
+              return 0;
+            });
+
+            displayHeaders();
+            displayAllTracks(all_tracks);
+
+        }
+
+        function displayHeaders(){
             $('#soundcloud_widget').html(
 
                 "<th></th>"+
                 "<th>Track Title</th>"+
                 "<th>Play Count</th>"+
+                "<th>Author</th>"+
                 "<th>Upload Date</th>"
                 );
+        }
 
+        function displayAllTracks(all_tracks){
             for (i = 0; i < all_tracks.length; i++) {
                 var g = document.createElement('tr');
                 g.id = all_tracks[i].id;
@@ -85,6 +129,7 @@
                 g.innerHTML = '<td>' + tmp.innerHTML + '</td>'
                         + '<td>' + all_tracks[i].title + '</td>'
                         + '<td>' + all_tracks[i].playback_count + '</td>'
+                        + '<td>' + all_tracks[i].user.username + '</td>'
                         + '<td>' + timestamp + '</td>';
                 $('#soundcloud_widget').append(g);
 
@@ -97,7 +142,6 @@
 {#                });#}
 
             }
-
         }
 
         function loadAllTracks(){
@@ -183,6 +227,10 @@
         <div id="player"></div>
 
         <button id="load_tracks" onclick="sortAndDisplayTracks(all_tracks)"  disabled>Load Data</button>
+        <button id="sort_by_play_count" onclick="sortAndDisplayTracks(all_tracks)">Sort By Play Count</button>
+        <button id="sort_by_upload_date" onclick="sortAndDisplayTracksByDate(all_tracks)">Sort By Upload Date</button>
+        <button id="sort_by_title" onclick="sortAndDisplayTracksByTitle(all_tracks)">Sort By Title</button>
+
 
         <table id = "soundcloud_widget">
 
