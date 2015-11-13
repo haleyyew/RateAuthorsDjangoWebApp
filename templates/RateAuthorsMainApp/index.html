@@ -15,7 +15,9 @@
           });
 
         var all_tracks = [];
+        var colouredItem = null;
         loadAllTracks();
+
 
         function embed (url) {
           SC.oEmbed(url
@@ -92,10 +94,20 @@
 
         }
 
+        function totalPlayCount(all_tracks){
+            var totalCount = 0;
+            for (i = 0; i < all_tracks.length; i++) {
+                totalCount += all_tracks[i].playback_count;
+            }
+
+            alert(totalCount);
+        }
+
         function displayHeaders(){
             $('#soundcloud_widget').html(
 
                 "<th></th>"+
+                "<th>#</th>"+
                 "<th>Track Title</th>"+
                 "<th>Play Count</th>"+
                 "<th>Author</th>"+
@@ -109,8 +121,10 @@
                 g.id = all_tracks[i].id;
                 g.value = all_tracks[i].permalink_url;
                 g.addEventListener("click", function(){
-                    embed(this.value)
+                    embed(this.value);
+                    switchColors(this.id);
                 });
+
 
 
                 var image = document.createElement('img');
@@ -125,8 +139,12 @@
 
                 var timestamp = all_tracks[i].created_at;
                 timestamp = timestamp.replace("+0000", " ");
+                timestamp = timestamp.split(" ");
+                timestamp = timestamp[0];
 
+                var index = i+1;
                 g.innerHTML = '<td>' + tmp.innerHTML + '</td>'
+                        + '<td>' + index + '</td>'
                         + '<td>' + all_tracks[i].title + '</td>'
                         + '<td>' + all_tracks[i].playback_count + '</td>'
                         + '<td>' + all_tracks[i].user.username + '</td>'
@@ -165,6 +183,13 @@
 
         }
 
+        function switchColors(id){
+            $('#'+id).children('td').css('background-color','#EBEBEB');
+            $('#'+colouredItem).children('td').css('background-color','');
+            colouredItem = id;
+        }
+
+
         $(document).ready(function() {
 
             enableButton();
@@ -189,13 +214,9 @@
 
         <style>
 
-{#            td {#}
-{#                position: relative;#}
-{#            }#}
-{#            img {#}
-{#                position: absolute;#}
-{#              clip: rect(4px, 20px, 20px, 4px);#}
-{#            }#}
+            body {
+                background-color: #ecf8fb;
+            }
 
             table {
                 border-collapse: collapse;
@@ -211,7 +232,7 @@
             }
 
             tr:hover {
-              color: blue ;
+              color: #3176ff;
               background-color: beige ;
             }
 
@@ -227,9 +248,10 @@
         <div id="player"></div>
 
         <button id="load_tracks" onclick="sortAndDisplayTracks(all_tracks)"  disabled>Load Data</button>
+        <button id="sort_by_title" onclick="sortAndDisplayTracksByTitle(all_tracks)">Sort By Title</button>
         <button id="sort_by_play_count" onclick="sortAndDisplayTracks(all_tracks)">Sort By Play Count</button>
         <button id="sort_by_upload_date" onclick="sortAndDisplayTracksByDate(all_tracks)">Sort By Upload Date</button>
-        <button id="sort_by_title" onclick="sortAndDisplayTracksByTitle(all_tracks)">Sort By Title</button>
+        <button id="total_play_count" onclick="totalPlayCount(all_tracks)">Total Play Count</button>
 
 
         <table id = "soundcloud_widget">
