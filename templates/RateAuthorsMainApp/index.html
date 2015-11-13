@@ -14,6 +14,7 @@
             client_id: '39ede846b4c9880b66be516c1c052a0a'
           });
 
+          var all_users = [];
         var all_tracks = [];
         var colouredItem = null;
 {#        loadAllTracks();#}
@@ -189,26 +190,20 @@
 
         $(document).ready(function() {
 
-            all_tracks = [];
 
-
-            var haoranyu1 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-4&client_id=39ede846b4c9880b66be516c1c052a0a';
-            var haoranyu2 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-1&client_id=cdb96c0de5bb452f0c477463e9d136d0';
-            var haoranyu3 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-2&client_id=6c36cd7f5817e3b72b337e5f7b2ee27e';
-            var haoranyu4 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-3&client_id=08c7660800f3ecace978cd8d95525ee6';
-            var haoranyu5 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-5&client_id=8ce14ba15ee909a358fe1bface79c4b0';
-
-
-
-            requestUserId(haoranyu1);
-            requestUserId(haoranyu2);
-            requestUserId(haoranyu3);
-            requestUserId(haoranyu4);
-            requestUserId(haoranyu5);
-
-
-
-
+            loadData();
+{##}
+{#            var haoranyu1 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-4&client_id=39ede846b4c9880b66be516c1c052a0a';#}
+{#            var haoranyu2 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-1&client_id=cdb96c0de5bb452f0c477463e9d136d0';#}
+{#            var haoranyu3 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-2&client_id=6c36cd7f5817e3b72b337e5f7b2ee27e';#}
+{#            var haoranyu4 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-3&client_id=08c7660800f3ecace978cd8d95525ee6';#}
+{#            var haoranyu5 = 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-5&client_id=8ce14ba15ee909a358fe1bface79c4b0';#}
+{##}
+{#            requestUserId(haoranyu1);#}
+{#            requestUserId(haoranyu2);#}
+{#            requestUserId(haoranyu3);#}
+{#            requestUserId(haoranyu4);#}
+{#            requestUserId(haoranyu5);#}
 
             });
 
@@ -228,6 +223,21 @@
 
 
             }
+
+        function loadData(){
+            all_tracks = [];
+            $('#response').html("");
+
+            var url_string = document.getElementById('textbox').value;
+
+            var url_string_array = url_string.split(",");
+
+
+            for (i = 0; i < url_string_array.length; i++) {
+                var url = url_string_array[i].trim();
+                requestUserId(url);
+            }
+        }
 {#          window.onload = enableButton;#}
 
         </script>
@@ -265,7 +275,16 @@
     <body>
         <h1>Hello Raters!</h1>
         Currently the "Blog Rater" app is not yet created, but here is another app called "SoundCloud Tracks Agglomerator". <strong>{{ boldmessage }}</strong><br />
-        You are viewing tracks from SoundCloud users: <div id="response"></div>
+
+        <input id="textbox" type="text" size='100' value=
+            'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-4&client_id=39ede846b4c9880b66be516c1c052a0a,
+            http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-1&client_id=cdb96c0de5bb452f0c477463e9d136d0,
+            http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-2&client_id=6c36cd7f5817e3b72b337e5f7b2ee27e,
+            http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-3&client_id=08c7660800f3ecace978cd8d95525ee6,
+            http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/haoran-yu-5&client_id=8ce14ba15ee909a358fe1bface79c4b0'>
+            <button id="load_data" onclick="loadData()">Load Data</button>
+
+        <br>You are viewing tracks from SoundCloud users: <div id="response"></div>
 
         <div id="stat"></div>
 
