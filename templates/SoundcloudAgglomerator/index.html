@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>RateAuthors - SoundCloud Tracks Agglomerator</title>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+        <script src="https://connect.soundcloud.com/sdk.js"></script>
+
+        <script>
+            SC.initialize({
+                client_id: '39ede846b4c9880b66be516c1c052a0a'
+            });
+
+            var all_users = [];
+            var all_tracks = [];
+            var colouredItem = null;
+            var enableButtons = 0;
+            var enableButtonsThreshold = 0;
+
+            function embed (url) {
+              SC.oEmbed(url
+                , { auto_play: true
+                  , maxwidth: 450
+                  , maxheight: 180
+                  , show_comments: false }
+                , document.getElementById("player")
+              );
+            }
+
+            function sortAndDisplayTracks(all_tracks){
+                all_tracks.sort(function(a, b) {
+                    return b.playback_count - a.playback_count;
+                });
+
+                displayHeaders();
+                displayAllTracks(all_tracks);
+            }
+
+            function sortAndDisplayTracksByDate(all_tracks){
+                all_tracks.sort(function (a, b) {
+                  if (a.created_at > b.created_at) {
+                    return -1;
+                  }
+                  if (a.created_at < b.created_at) {
+                    return 1;
+                  }
+                  return 0;
+                });
+                displayHeaders();
+                displayAllTracks(all_tracks);
+            }
+
+            function sortAndDisplayTracksByTitle(all_tracks){
+                all_tracks.sort(function (a, b) {
+                  if (a.title > b.title) {
+                    return -1;
+                  }
+                  if (a.title < b.title) {
+                    return 1;
+                  }
+                  return 0;
+                });
+                displayHeaders();
+                displayAllTracks(all_tracks);
+            }
+
+            function totalPlayCount(all_tracks){
+                var totalCount = 0;
+                for (i = 0; i < all_tracks.length; i++) {
+                    totalCount += all_tracks[i].playback_count;
+                }
+                alert(totalCount);
+            }
+
+            function displayHeaders(){
+                $('#soundcloud_widget').html(
+                    "<th></th>"+
+                    "<th>#</th>"+
+                    "<th>Track Title</th>"+
+                    "<th>Play Count</th>"+
+                    "<th>Author</th>"+
+                    "<th>Upload Date</th>"
+                );
+            }
+
+            function displayAllTracks(all_tracks){
+                for (i = 0; i < all_tracks.length; i++) {
+                    var g = document.createElement('tr');
+                    g.id = all_tracks[i].id;
+                    g.value = all_tracks[i].permalink_url;
+                    g.addEventListener("click", function(){
+                        embed(this.value);
+                        switchColors(this.id);
+                    });
+
+                    var image = document.createElement('img');
+                    image.src = all_tracks[i].user.avatar_url;
+                    image.height = 12;
+                    image.width = 12;
+
+                    var tmp = document.createElement("div");
+                    tmp.appendChild(image);
+
+                    var timestamp = all_tracks[i].created_at;
+                    timestamp = timestamp.replace("+0000", " ");
+                    timestamp = timestamp.split(" ");
+                    timestamp = timestamp[0];
+
+                    var index = i+1;
+                    g.innerHTML = '<td>' + tmp.innerHTML + '</td>'
+                            + '<td>' + index + '</td>'
+                            + '<td>' + all_tracks[i].title + '</td>'
+                            + '<td>' + all_tracks[i].playback_count + '</td>'
+                            + '<td>' + all_tracks[i].user.username + '</td>'
+                            + '<td>' + timestamp + '</td>';
+                    $('#soundcloud_widget').append(g);
+                }
+            }
+
+            function loadAllTracks(id){
+                  SC.get("/tracks", {
+                      user_id: id,
+                      limit: 300
+                  },
+                    function (tracks) {
+                    $(tracks).each(function (index, track) {
+                        all_tracks.push(track);
+                        enableButtons += 1;
+
+                        if (enableButtons == enableButtonsThreshold){
+                                sortAndDisplayTracks(all_tracks);
+                                enableButton();
+                        }
+                    });
+                });
+            }
+
+            function switchColors(id){
+                $('#'+id).children('td').css('background-color','#EBEBEB');
+                $('#'+colouredItem).children('td').css('background-color','');
+                colouredItem = id;
+            }
+
+            function requestUserId(url){
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: processData,
+                    error: function(){ alert("failed"); }
+                });
+            }
+
+
+
+            function processData(data) {
+                $('#response').append(data.id + ", ");
+                enableButtonsThreshold += data.track_count;
+                loadAllTracks(data.id);
+            }
+
+            function enableButton(){
+                document.getElementById('sort_by_title').disabled = false;
+                document.getElementById('sort_by_play_count').disabled = false;
+                document.getElementById('sort_by_upload_date').disabled = false;
+                document.getElementById('total_play_count').disabled = false;
+            }
+
+            function loadData(){
+                all_tracks = [];
+                $('#response').html("");
+
+                var url_string = document.getElementById('textbox').value;
+                var url_string_array = url_string.split(",");
+
+                for (i = 0; i < url_string_array.length; i++) {
+                    var url = url_string_array[i].trim();
+                    requestUserId(url);
+                }
+            }
+
+            $(document).ready(function() {
+                loadData();
+            });
+{#          window.onload = enableButton;#}
+
+        </script>
+
+
+        <style>
+            body {
+                background-color: #ecf8fb;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            td {
+                cursor: pointer
+            }
+            tr:hover {
+              color: #3176ff;
+              background-color: beige ;
+            }
+        </style>
+
+    </head>
+
+    <body>
+        <h1>SoundCloud Tracks Agglomerator</h1>
+        <strong>{{ boldmessage }}</strong><br />
+
+
+        <input id="textbox" type="text" size='100' value='{{ search }}'>
+        <button id="load_data" onclick="loadData()">Load Tracks</button>
+
+        <br>You are viewing tracks from SoundCloud users: <div id="response"></div>
+
+        <div id="stat"></div>
+        <div id="player"></div>
+
+        <button id="sort_by_title" onclick="sortAndDisplayTracksByTitle(all_tracks)" disabled>Sort By Title</button>
+        <button id="sort_by_play_count" onclick="sortAndDisplayTracks(all_tracks)" disabled>Sort By Play Count</button>
+        <button id="sort_by_upload_date" onclick="sortAndDisplayTracksByDate(all_tracks)" disabled>Sort By Upload Date</button>
+        <button id="total_play_count" onclick="totalPlayCount(all_tracks)" disabled>Total Play Count</button>
+
+        <table id = "soundcloud_widget">
+        </table>
+
+    </body>
+
+</html>
