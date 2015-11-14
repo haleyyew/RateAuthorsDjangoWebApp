@@ -8,7 +8,45 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
         <script>
+            function displayHeaders(){
+                $('#blogger_widget').html(
+                    '<tr>'+
+                    "<th>Name</th>"+
+                    "<th>URL</th>"+
+                    '</tr>'
+                );
+            }
 
+            function requestUserId(url){
+                alert(url);
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: processData,
+                    error: function(){ alert("failed"); }
+                });
+            }
+
+            function processData(data) {
+                displayHeaders();
+
+                $('#blogger_widget').append(
+                    '<tr>'
+                    +'<td>' + data.name + '</td>'
+                    + '<td>' + data.url + '</td>'
+                    +'</tr>'
+                    );
+
+            }
+
+            $(document).ready(function() {
+                var url = '{{ search }}';
+                url = url.replace("&amp;", "&");
+
+                //requestUserId('https://www.googleapis.com/blogger/v3/blogs/byurl?url=http://haleyyew.blogspot.ca/&key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw');
+                requestUserId(url);
+            });
         </script>
 
 
@@ -22,10 +60,14 @@
 
     </head>
 
+{#AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw     #}
+
     <body>
         <h1>Blog Rater</h1>
         <strong>{{ boldmessage }}</strong><br />
 
+        <table id = "blogger_widget">
+        </table>
 
     </body>
 
