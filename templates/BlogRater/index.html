@@ -8,17 +8,32 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
         <script>
+            var colouredItem = null;
+
             function displayHeaders(){
                 $('#blogger_widget').html(
-                    '<tr>'+
+
                     "<th>Name</th>"+
                     "<th>URL</th>"+
-                    '</tr>'
+                    "<th>Blog ID</th>"
+
+                );
+            }
+
+            function displayPostsHeaders(){
+                $('#user_posts').html(
+
+                    "<th>Post Name</th>"+
+                    "<th>URL</th>"+
+                    "<th>Post ID</th>"+
+                    "<th>Author</th>"+
+                    "<th>Author ID</th>"
+
                 );
             }
 
             function requestUserId(url){
-                alert(url);
+                //alert(url);
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -28,16 +43,84 @@
                 });
             }
 
+            function requestPosts(url){
+                //alert(url);
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: processPostsData,
+                    error: function(){ alert("failed"); }
+                });
+            }
+
+            function requestAllBlogPosts(id){
+                var url = "https://www.googleapis.com/blogger/v3/blogs/"+id.toString()+"/posts?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw";
+                requestPosts(url);
+            }
+
+            function processPostsData(datum) {
+
+                displayPostsHeaders();
+
+                var data = JSON.parse(datum);
+
+                for (var i = 0; i < data.items.length; i++) {
+                    alert(i);
+                    var post = data.items[i];
+
+                    alert(post.title);
+
+                    var g = document.createElement('tr');
+                    g.id = post.id;
+                    g.value = post.url;
+                    g.addEventListener("click", function(){
+                        switchColors(this.id);
+
+                    });
+
+
+                    g.innerHTML =
+                        '<td>' + post.title + '</td>'
+                        + '<td>' + post.url + '</td>'
+                        + '<td>' + post.id + '</td>'
+                        + '<td>' + post.author.displayName + '</td>'
+                        + '<td>' + post.author.id + '</td>';
+
+                    $('#user_posts').append(g);
+                }
+
+            }
+
+
             function processData(data) {
                 displayHeaders();
 
-                $('#blogger_widget').append(
-                    '<tr>'
-                    +'<td>' + data.name + '</td>'
-                    + '<td>' + data.url + '</td>'
-                    +'</tr>'
-                    );
 
+                var g = document.createElement('tr');
+                g.id = data.id;
+                g.value = data.url;
+                g.addEventListener("click", function(){
+                    switchColors(this.id);
+                    requestAllBlogPosts(this.id)
+                });
+
+
+                g.innerHTML =
+                    '<td>' + data.name + '</td>'
+                    + '<td>' + data.url + '</td>'
+                    + '<td>' + data.id + '</td>';
+
+                $('#blogger_widget').append(g);
+
+            }
+
+
+
+            function switchColors(id){
+                $('#'+id).children('td').css('background-color','#EBEBEB');
+                $('#'+colouredItem).children('td').css('background-color','');
+                colouredItem = id;
             }
 
             $(document).ready(function() {
@@ -54,8 +137,19 @@
             body {
                 background-color: #ecf8fb;
             }
-
-
+            table {
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            td {
+                cursor: pointer
+            }
+            tr:hover {
+              color: #3176ff;
+              background-color: beige ;
+            }
         </style>
 
     </head>
@@ -66,8 +160,15 @@
         <h1>Blog Rater</h1>
         <strong>{{ boldmessage }}</strong><br />
 
+        <table id = "blogger_user">
+        </table>
+        <br>
         <table id = "blogger_widget">
         </table>
+        <br>
+        <table id = "user_posts">
+        </table>
+
 
     </body>
 
