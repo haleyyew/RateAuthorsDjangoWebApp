@@ -9,5 +9,8 @@ if __name__ == "__main__":
 
     execute_from_command_line(sys.argv)
 
+# python manage.py makemigrations BlogRater
 # migrate
 # startapp soundcloud_agglomerator
+# createsuperuser
+#   haoran  password

@@ -14,8 +14,9 @@
                 $('#blogger_widget').html(
 
                     "<th>Name</th>"+
-                    "<th>URL</th>"+
-                    "<th>Blog ID</th>"
+                    "<th>URL</th>"
+{#                    +#}
+{#                    "<th>Blog ID</th>"#}
 
                 );
             }
@@ -25,9 +26,18 @@
 
                     "<th>Post Name</th>"+
                     "<th>URL</th>"+
-                    "<th>Post ID</th>"+
-                    "<th>Author</th>"+
-                    "<th>Author ID</th>"
+{#                    "<th>Post ID</th>"+#}
+                    "<th>Author</th>"
+{#                    "<th>Author ID</th>"#}
+
+                );
+            }
+
+            function rateAuthor(){
+                $('#blogger_user').html(
+
+                    "Name: "+
+                    "Rating:"
 
                 );
             }
@@ -54,41 +64,54 @@
                 });
             }
 
+
             function requestAllBlogPosts(id){
                 var url = "https://www.googleapis.com/blogger/v3/blogs/"+id.toString()+"/posts?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw";
                 requestPosts(url);
             }
 
-            function processPostsData(datum) {
+            function processPostsData(data) {
 
                 displayPostsHeaders();
 
-                var data = JSON.parse(datum);
+
+{#                var data = {#}
+{#                "items":[#}
+{#                    {"url":"John", "id":"Doe"}#}
+{#                ]#}
+{#                };#}
+
+                //var data = JSON.parse(datum);
 
                 for (var i = 0; i < data.items.length; i++) {
-                    alert(i);
+                    //alert(i);
                     var post = data.items[i];
 
-                    alert(post.title);
+                    //alert(post.url);
 
                     var g = document.createElement('tr');
                     g.id = post.id;
-                    g.value = post.url;
+                    g.value = post.author.id;
                     g.addEventListener("click", function(){
                         switchColors(this.id);
-
+                        rateAuthor(data.items[0].author.displayName);
                     });
 
 
                     g.innerHTML =
+{#                        '<td>' + post.url + '</td>'#}
+{#                        + '<td>' + post.id + '</td>';#}
+
                         '<td>' + post.title + '</td>'
                         + '<td>' + post.url + '</td>'
-                        + '<td>' + post.id + '</td>'
-                        + '<td>' + post.author.displayName + '</td>'
-                        + '<td>' + post.author.id + '</td>';
+{#                        + '<td>' + post.id + '</td>'#}
+                        + '<td>' + post.author.displayName + '</td>';
+{#                        + '<td>' + post.author.id + '</td>';#}
 
                     $('#user_posts').append(g);
                 }
+
+                //getAuthorInfo(data.items[0].author.id);
 
             }
 
@@ -108,13 +131,12 @@
 
                 g.innerHTML =
                     '<td>' + data.name + '</td>'
-                    + '<td>' + data.url + '</td>'
-                    + '<td>' + data.id + '</td>';
+                    + '<td>' + data.url + '</td>';
+{#                    + '<td>' + data.id + '</td>';#}
 
                 $('#blogger_widget').append(g);
 
             }
-
 
 
             function switchColors(id){
@@ -160,13 +182,14 @@
         <h1>Blog Rater</h1>
         <strong>{{ boldmessage }}</strong><br />
 
-        <table id = "blogger_user">
-        </table>
-        <br>
+        Blog info:<br>
         <table id = "blogger_widget">
         </table>
-        <br>
+        <br>Latest posts:<br>
         <table id = "user_posts">
+        </table>
+        <br>Rate this author:<br>
+        <table id = "blogger_user">
         </table>
 
 
