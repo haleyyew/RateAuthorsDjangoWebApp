@@ -22,25 +22,23 @@
             }
 
             function displayPostsHeaders(){
+
                 $('#user_posts').html(
 
                     "<th>Post Name</th>"+
                     "<th>URL</th>"+
 {#                    "<th>Post ID</th>"+#}
-                    "<th>Author</th>"
-{#                    "<th>Author ID</th>"#}
+                    "<th>Author</th>"+
+                    "<th>Author Rating</th>"
 
                 );
             }
 
-            function rateAuthor(){
 
-{#                $('#blogger_user').html(#}
+{#            function rateAuthor(){#}
 {##}
 {##}
-{##}
-{#                );#}
-            }
+{#            }#}
 
             function requestUserId(url){
                 //alert(url);
@@ -72,7 +70,7 @@
 
             function processPostsData(data) {
 
-                displayPostsHeaders();
+
 
 
 {#                var data = {#}
@@ -94,8 +92,15 @@
                     g.value = post.author.id;
                     g.addEventListener("click", function(){
                         switchColors(this.id);
-                        rateAuthor(data.items[0].author.displayName);
+{#                        rateAuthor(data.items[0].author.displayName);#}
                     });
+
+                    var button =
+                    '<form action="/blograter/get_author/" method="get" id="form1">'+
+                            '<input type="hidden" name="id" value='+ g.value+'>'+
+                            '<input type="hidden" name="name" value='+ data.items[0].author.displayName+'>'+
+                    '<input type="submit" class="btn" value="View Author Ratings" >'+
+                    '</form>';
 
 
                     g.innerHTML =
@@ -105,7 +110,8 @@
                         '<td>' + post.title + '</td>'
                         + '<td>' + post.url + '</td>'
 {#                        + '<td>' + post.id + '</td>'#}
-                        + '<td>' + post.author.displayName + '</td>';
+                        + '<td>' + post.author.displayName + '</td>'
+                        + '<td>' + button + '</td>';
 {#                        + '<td>' + post.author.id + '</td>';#}
 
                     $('#user_posts').append(g);
@@ -125,6 +131,8 @@
                 g.value = data.url;
                 g.addEventListener("click", function(){
                     switchColors(this.id);
+
+                    displayPostsHeaders();
                     requestAllBlogPosts(this.id)
                 });
 
@@ -148,6 +156,7 @@
             $(document).ready(function() {
                 var url = '{{ search }}';
                 url = url.replace("&amp;", "&");
+                displayPostsHeaders();
 
                 //requestUserId('https://www.googleapis.com/blogger/v3/blogs/byurl?url=http://haleyyew.blogspot.ca/&key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw');
                 requestUserId(url);
@@ -188,19 +197,9 @@
         <br>Latest posts:<br>
         <table id = "user_posts">
         </table>
-        <br>Rate this author:<br>
-        <table id = "blogger_user">
-            <tr>
-                <th>Author</th>
-                <th>Rating</th>
-                <th>Add 1 Rating</th>
-            </tr>
-            <tr>
-                <td id="author_name"></td>
-                <td id="author_rating"></td>
-                <td id="add_one"></td>
-            </tr>
-        </table>
+
+
+
 
 
     </body>

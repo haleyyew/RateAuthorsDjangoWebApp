@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>RateAuthors - Blog Rater</title>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+        <script>
+            function writeAuthorTable(){
+
+                var table = "<th>Author</th>"
+                +"<th>Rating</th>"
+                +"<th>Add 1 Rating</th>";
+
+
+                $('#blogger_user').html(table);
+
+            }
+
+            function writeValuesToTable(){
+                var button =
+{#                        '';#}
+                '<form action="/blograter/rate_author/" method="get" id="form1">'+
+                        '<input type="hidden" name="id" value="{{ author_id }}">'+
+                        '<input type="hidden" name="name" value="{{ author_name }}">'+
+                        '<input type="hidden" name="add" value="true">'+
+                '<input type="submit" class="btn" value="+1" >'+
+                '</form>';
+
+                var table =
+                "<tr>"
+                    +"<td id='author_name'>{{ author_name }}</td>"
+                    +"<td id='author_rating'>{{ author_rating }}</td>"
+                    +"<td id='add_one'>"+button+"</td>"
+                +"</tr>";
+                $('#blogger_user').append(table);
+            }
+
+            $(document).ready(function() {
+
+                writeAuthorTable();
+                writeValuesToTable();
+
+            });
+
+        </script>
+        <style>
+            body {
+                background-color: #ecf8fb;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            td {
+                cursor: pointer
+            }
+            tr:hover {
+              color: #3176ff;
+              background-color: beige ;
+            }
+        </style>
+
+    </head>
+
+
+    <body>
+        <h1>Blog Rater</h1>
+        <br>Rate this author:<br>
+        <table id = "blogger_user">
+        </table>
+    </body>
+    <br>
+    <a href="/">Home</a>
+
+</html>

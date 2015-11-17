@@ -8,13 +8,30 @@ def index(request):
                     }
     return render(request, 'BlogRater/index.html', context_dict)
 
-# def get_author(request):
-#     if Author.filter(id=food):
-#         existing_tree[0].amount += amount
-#         existing_tree[0].save()
-#     else:
-#         FoodTree.objects.create(
-#             garden=garden,
-#             amount=amount,
-#             food_type=food
-#         )
+def get_author(request):
+    author_id = request.GET['id']
+
+    try :
+        author = Author.objects.get(id=author_id)
+        context_dict = {'author_id': author_id, 'author_name': author.name, 'author_rating': author.rating}
+    except:
+        Author.objects.create(
+            id=author_id,
+            name=request.GET['name'],
+            rating=0
+        )
+        author = Author.objects.get(id=author_id)
+        context_dict = {'author_id': author_id, 'author_name': author.name, 'author_rating': author.rating}
+
+    return render(request, 'BlogRater/author_rating.html', context_dict)
+
+def add_rating(request):
+    author_id = request.GET['id']
+
+    add = request.GET['add']
+    author = Author.objects.get(id=author_id)
+    author.rating += 1
+    author.save()
+    context_dict = {'author_id': author_id, 'author_name': author.name, 'author_rating': author.rating}
+
+    return render(request, 'BlogRater/author_rating.html', context_dict)
