@@ -34,12 +34,12 @@
             }
 
             function rateAuthor(){
-                $('#blogger_user').html(
 
-                    "Name: "+
-                    "Rating:"
-
-                );
+{#                $('#blogger_user').html(#}
+{##}
+{##}
+{##}
+{#                );#}
             }
 
             function requestUserId(url){
@@ -190,6 +190,16 @@
         </table>
         <br>Rate this author:<br>
         <table id = "blogger_user">
+            <tr>
+                <th>Author</th>
+                <th>Rating</th>
+                <th>Add 1 Rating</th>
+            </tr>
+            <tr>
+                <td id="author_name"></td>
+                <td id="author_rating"></td>
+                <td id="add_one"></td>
+            </tr>
         </table>
 
 

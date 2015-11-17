@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from BlogRater.models import Category
+from BlogRater.models import Author
 
 def index(request):
     # return HttpResponse("Hey There!")
@@ -8,3 +8,13 @@ def index(request):
                     }
     return render(request, 'BlogRater/index.html', context_dict)
 
+# def get_author(request):
+#     if Author.filter(id=food):
+#         existing_tree[0].amount += amount
+#         existing_tree[0].save()
+#     else:
+#         FoodTree.objects.create(
+#             garden=garden,
+#             amount=amount,
+#             food_type=food
+#         )

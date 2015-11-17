@@ -1,8 +1,9 @@
 from django.db import models
 
 # Create your models here.
-class Category(models.Model):
+class Author(models.Model):
     id = models.CharField(max_length=128, unique=True, primary_key=True)
+    name = models.CharField(max_length=128)
     rating = models.IntegerField(default=0)
 
     def __str__(self):
