@@ -38,6 +38,9 @@
                 $('#blogger_user').append(table);
             }
 
+
+            function loadAllAuthorsInDb(){}
+
             $(document).ready(function() {
 
                 writeAuthorTable();
@@ -72,6 +75,15 @@
         <h1>Blog Rater</h1>
         <br>Rate this author:<br>
         <table id = "blogger_user">
+        </table>
+        Listed below are all authors stored in our database:
+        <table id = "all_authors">
+            {% for a in list_of_all_authors %}
+                <tr id={{ a.id }} class='a'>
+                <td>{{ a.name }}</td>
+                <td>{{ a.rating }}</td>
+                </tr>
+            {% endfor %}
         </table>
     </body>
     <br>

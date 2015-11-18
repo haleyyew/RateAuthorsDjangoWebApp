@@ -9,6 +9,8 @@
 
         <script>
             var colouredItem = null;
+            var clickedItemId = null;
+            var tableIndex = 1;
 
             function displayHeaders(){
                 $('#blogger_widget').html(
@@ -25,8 +27,10 @@
 
                 $('#user_posts').html(
 
+                    "<th>#</th>"+
+
                     "<th>Post Name</th>"+
-                    "<th>URL</th>"+
+
 {#                    "<th>Post ID</th>"+#}
                     "<th>Author</th>"+
                     "<th>Author Rating</th>"
@@ -61,61 +65,84 @@
                     error: function(){ alert("failed"); }
                 });
             }
-
+            function requestPost(url){
+                //alert(url);
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: processPostData,
+                    error: function(){ alert("failed"); }
+                });
+            }
 
             function requestAllBlogPosts(id){
+                clickedItemId = id;
+                //https://www.googleapis.com/blogger/v3/blogs/8986028814956128839/posts?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw
                 var url = "https://www.googleapis.com/blogger/v3/blogs/"+id.toString()+"/posts?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw";
                 requestPosts(url);
+
+            }
+
+            function requestAllBlogPostsWithToken(id, token){
+                var url = "https://www.googleapis.com/blogger/v3/blogs/"+id.toString()+"/posts?pageToken="+token+"&key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw";
+                //alert(url);
+                requestPosts(url);
+            }
+
+            function getPost(author, id){
+                var url = "https://www.googleapis.com/blogger/v3/blogs/"+author.toString()+"/posts/"+id.toString()+"?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw";
+                requestPost(url);
+                //alert(url);
+            }
+
+            function processPostData(data){
+                $('#blog_post').html(data.content);
             }
 
             function processPostsData(data) {
 
 
-
-
-{#                var data = {#}
-{#                "items":[#}
-{#                    {"url":"John", "id":"Doe"}#}
-{#                ]#}
-{#                };#}
-
-                //var data = JSON.parse(datum);
-
                 for (var i = 0; i < data.items.length; i++) {
-                    //alert(i);
-                    var post = data.items[i];
 
-                    //alert(post.url);
+                    var post = data.items[i];
 
                     var g = document.createElement('tr');
                     g.id = post.id;
                     g.value = post.author.id;
+                    g.url = post.blog.id;
                     g.addEventListener("click", function(){
                         switchColors(this.id);
-{#                        rateAuthor(data.items[0].author.displayName);#}
+                        getPost(this.url, this.id);
                     });
 
                     var button =
                     '<form action="/blograter/get_author/" method="get" id="form1">'+
                             '<input type="hidden" name="id" value='+ g.value+'>'+
                             '<input type="hidden" name="name" value='+ data.items[0].author.displayName+'>'+
-                    '<input type="submit" class="btn" value="View Author Ratings" >'+
+                    '<input type="submit" class="btn" value="View Ratings" >'+
                     '</form>';
 
 
                     g.innerHTML =
-{#                        '<td>' + post.url + '</td>'#}
-{#                        + '<td>' + post.id + '</td>';#}
 
-                        '<td>' + post.title + '</td>'
-                        + '<td>' + post.url + '</td>'
+                        '<td>' + tableIndex + '</td>'
+                        + '<td>' + post.title + '</td>'
+{#                        + '<td>' + post.url + '</td>'#}
+
 {#                        + '<td>' + post.id + '</td>'#}
                         + '<td>' + post.author.displayName + '</td>'
                         + '<td>' + button + '</td>';
 {#                        + '<td>' + post.author.id + '</td>';#}
 
                     $('#user_posts').append(g);
+                    tableIndex++;
                 }
+
+
+                var token = data.nextPageToken;
+                if (token != null){requestAllBlogPostsWithToken(clickedItemId, token);}
+
 
                 //getAuthorInfo(data.items[0].author.id);
 
@@ -131,7 +158,7 @@
                 g.value = data.url;
                 g.addEventListener("click", function(){
                     switchColors(this.id);
-
+                    tableIndex = 1;
                     displayPostsHeaders();
                     requestAllBlogPosts(this.id)
                 });
@@ -185,19 +212,26 @@
 
     </head>
 
-{#AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw     #}
+
 
     <body>
         <h1>Blog Rater</h1>
         <strong>{{ boldmessage }}</strong><br />
+        <form method="get" action="/blograter/">
+            <input id="textbox" name="url" type="text" size='100' value=
+                '{{ search }}'>
+            <input type="submit" class="btn" value="View Author Ratings" >
+        </form>
 
         Blog info:<br>
         <table id = "blogger_widget">
         </table>
-        <br>Latest posts:<br>
+        <br>All posts of blog:<br>
         <table id = "user_posts">
         </table>
-
+        <br>Post Content:<br>
+        <table id = "blog_post">
+        </table>
 
 
 

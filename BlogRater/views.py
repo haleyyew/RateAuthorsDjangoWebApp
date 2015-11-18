@@ -3,17 +3,18 @@ from BlogRater.models import Author
 
 def index(request):
     # return HttpResponse("Hey There!")
-    context_dict = {'boldmessage': "Please search for a blog, if the blog is not in our database, please add one. Then select the blog to view its lastest posts. Click on one of the posts to rate the author of that post.",
+    context_dict = {'boldmessage': "Please search for a blog by entering its url. Then select the blog to view all posts. Click on one of the posts to rate the author of that post.",
                     'search': request.GET['url']
                     }
     return render(request, 'BlogRater/index.html', context_dict)
 
 def get_author(request):
     author_id = request.GET['id']
+    list_of_all_authors = Author.objects.order_by('rating')
 
     try :
         author = Author.objects.get(id=author_id)
-        context_dict = {'author_id': author_id, 'author_name': author.name, 'author_rating': author.rating}
+        context_dict = {'author_id': author_id, 'author_name': author.name, 'author_rating': author.rating, 'list_of_all_authors':list_of_all_authors}
     except:
         Author.objects.create(
             id=author_id,
@@ -21,17 +22,18 @@ def get_author(request):
             rating=0
         )
         author = Author.objects.get(id=author_id)
-        context_dict = {'author_id': author_id, 'author_name': author.name, 'author_rating': author.rating}
+        context_dict = {'author_id': author_id, 'author_name': author.name, 'author_rating': author.rating, 'list_of_all_authors':list_of_all_authors}
 
     return render(request, 'BlogRater/author_rating.html', context_dict)
 
 def add_rating(request):
     author_id = request.GET['id']
+    list_of_all_authors = Author.objects.order_by('rating')
 
     add = request.GET['add']
     author = Author.objects.get(id=author_id)
     author.rating += 1
     author.save()
-    context_dict = {'author_id': author_id, 'author_name': author.name, 'author_rating': author.rating}
+    context_dict = {'author_id': author_id, 'author_name': author.name, 'author_rating': author.rating, 'list_of_all_authors':list_of_all_authors}
 
     return render(request, 'BlogRater/author_rating.html', context_dict)
