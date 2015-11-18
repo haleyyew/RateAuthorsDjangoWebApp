@@ -14,3 +14,4 @@ if __name__ == "__main__":
 # startapp soundcloud_agglomerator
 # createsuperuser
 #   haoran  password
+# deployed: haleyyew haleyyew
