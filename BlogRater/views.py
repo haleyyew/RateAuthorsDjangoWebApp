@@ -10,7 +10,7 @@ def index(request):
 
 def get_author(request):
     author_id = request.GET['id']
-    list_of_all_authors = Author.objects.order_by('rating')
+    list_of_all_authors = Author.objects.order_by('-rating')
 
     try :
         author = Author.objects.get(id=author_id)
@@ -28,7 +28,7 @@ def get_author(request):
 
 def add_rating(request):
     author_id = request.GET['id']
-    list_of_all_authors = Author.objects.order_by('rating')
+    list_of_all_authors = Author.objects.order_by('-rating')
 
     add = request.GET['add']
     author = Author.objects.get(id=author_id)

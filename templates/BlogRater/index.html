@@ -81,7 +81,7 @@
                 //https://www.googleapis.com/blogger/v3/blogs/8986028814956128839/posts?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw
                 var url = "https://www.googleapis.com/blogger/v3/blogs/"+id.toString()+"/posts?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw";
                 requestPosts(url);
-
+                //alert('here');
             }
 
             function requestAllBlogPostsWithToken(id, token){
@@ -114,6 +114,7 @@
                     g.addEventListener("click", function(){
                         switchColors(this.id);
                         getPost(this.url, this.id);
+                        document.getElementById("blog_post").scrollIntoView();
                     });
 
                     var button =
@@ -152,15 +153,17 @@
             function processData(data) {
                 displayHeaders();
 
-
+                requestAllBlogPosts(data.id);
                 var g = document.createElement('tr');
                 g.id = data.id;
                 g.value = data.url;
                 g.addEventListener("click", function(){
+
                     switchColors(this.id);
                     tableIndex = 1;
                     displayPostsHeaders();
-                    requestAllBlogPosts(this.id)
+                    requestAllBlogPosts(this.id);
+
                 });
 
 
@@ -187,6 +190,7 @@
 
                 //requestUserId('https://www.googleapis.com/blogger/v3/blogs/byurl?url=http://haleyyew.blogspot.ca/&key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw');
                 requestUserId(url);
+
             });
         </script>
 
@@ -215,7 +219,9 @@
 
 
     <body>
+        <a href="/">Home</a>
         <h1>Blog Rater</h1>
+        <A NAME="top_page">
         <strong>{{ boldmessage }}</strong><br />
         <form method="get" action="/blograter/">
             <input id="textbox" name="url" type="text" size='100' value=
@@ -232,7 +238,7 @@
         <br>Post Content:<br>
         <table id = "blog_post">
         </table>
-
+        <A HREF="#top_page">Back to the top</A>
 
 
 
