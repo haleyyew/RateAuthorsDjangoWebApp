@@ -13,7 +13,6 @@
                 client_id: '39ede846b4c9880b66be516c1c052a0a'
             });
 
-            var all_users = [];
             var all_tracks = [];
             var colouredItem = null;
             var enableButtons = 0;
@@ -153,8 +152,6 @@
                 });
             }
 
-
-
             function processData(data) {
                 $('#response').append(data.id + ", ");
                 enableButtonsThreshold += data.track_count;
@@ -177,6 +174,7 @@
 
                 for (i = 0; i < url_string_array.length; i++) {
                     var url = url_string_array[i].trim();
+                    url = 'http://api.soundcloud.com/resolve.json?url='+url+'&client_id=39ede846b4c9880b66be516c1c052a0a';
                     requestUserId(url);
                 }
             }
@@ -184,7 +182,6 @@
             $(document).ready(function() {
                 loadData();
             });
-{#          window.onload = enableButton;#}
 
         </script>
 
@@ -220,7 +217,6 @@
 
         <br>You are viewing tracks from SoundCloud users: <div id="response"></div>
 
-        <div id="stat"></div>
         <div id="player"></div>
 
         <button id="sort_by_title" onclick="sortAndDisplayTracksByTitle(all_tracks)" disabled>Sort By Title</button>

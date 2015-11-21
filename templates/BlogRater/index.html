@@ -14,38 +14,23 @@
 
             function displayHeaders(){
                 $('#blogger_widget').html(
-
                     "<th>Name</th>"+
                     "<th>URL</th>"
-{#                    +#}
-{#                    "<th>Blog ID</th>"#}
-
                 );
             }
 
             function displayPostsHeaders(){
 
                 $('#user_posts').html(
-
                     "<th>#</th>"+
-
                     "<th>Post Name</th>"+
-
-{#                    "<th>Post ID</th>"+#}
                     "<th>Author</th>"+
+                    "<th>Publish Date</th>"+
                     "<th>Author Rating</th>"
-
                 );
             }
 
-
-{#            function rateAuthor(){#}
-{##}
-{##}
-{#            }#}
-
             function requestUserId(url){
-                //alert(url);
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -55,8 +40,17 @@
                 });
             }
 
+            function requestUserIdAppend(url){
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: processDataAppend,
+                    error: function(){ alert("failed"); }
+                });
+            }
+
             function requestPosts(url){
-                //alert(url);
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -66,7 +60,6 @@
                 });
             }
             function requestPost(url){
-                //alert(url);
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -78,22 +71,18 @@
 
             function requestAllBlogPosts(id){
                 clickedItemId = id;
-                //https://www.googleapis.com/blogger/v3/blogs/8986028814956128839/posts?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw
                 var url = "https://www.googleapis.com/blogger/v3/blogs/"+id.toString()+"/posts?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw";
                 requestPosts(url);
-                //alert('here');
             }
 
             function requestAllBlogPostsWithToken(id, token){
                 var url = "https://www.googleapis.com/blogger/v3/blogs/"+id.toString()+"/posts?pageToken="+token+"&key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw";
-                //alert(url);
                 requestPosts(url);
             }
 
             function getPost(author, id){
                 var url = "https://www.googleapis.com/blogger/v3/blogs/"+author.toString()+"/posts/"+id.toString()+"?key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw";
                 requestPost(url);
-                //alert(url);
             }
 
             function processPostData(data){
@@ -101,20 +90,18 @@
             }
 
             function processPostsData(data) {
-
-
                 for (var i = 0; i < data.items.length; i++) {
-
                     var post = data.items[i];
-
                     var g = document.createElement('tr');
                     g.id = post.id;
                     g.value = post.author.id;
                     g.url = post.blog.id;
+                    g.uri = post.title;
                     g.addEventListener("click", function(){
                         switchColors(this.id);
                         getPost(this.url, this.id);
                         document.getElementById("blog_post").scrollIntoView();
+                        $('#post_name').html(this.uri);
                     });
 
                     var button =
@@ -124,58 +111,65 @@
                     '<input type="submit" class="btn" value="View Ratings" >'+
                     '</form>';
 
+                    var published = post.published;
+                    published = published.match(/^[^T]*/);
 
                     g.innerHTML =
-
                         '<td>' + tableIndex + '</td>'
                         + '<td>' + post.title + '</td>'
-{#                        + '<td>' + post.url + '</td>'#}
-
-{#                        + '<td>' + post.id + '</td>'#}
                         + '<td>' + post.author.displayName + '</td>'
+                        + '<td>' + published + '</td>'
                         + '<td>' + button + '</td>';
-{#                        + '<td>' + post.author.id + '</td>';#}
 
                     $('#user_posts').append(g);
                     tableIndex++;
                 }
 
-
                 var token = data.nextPageToken;
                 if (token != null){requestAllBlogPostsWithToken(clickedItemId, token);}
 
-
-                //getAuthorInfo(data.items[0].author.id);
-
             }
 
-
             function processData(data) {
-                displayHeaders();
 
                 requestAllBlogPosts(data.id);
+                $('#blog_name').html(data.url);
                 var g = document.createElement('tr');
                 g.id = data.id;
                 g.value = data.url;
                 g.addEventListener("click", function(){
-
                     switchColors(this.id);
                     tableIndex = 1;
                     displayPostsHeaders();
                     requestAllBlogPosts(this.id);
-
+                    $('#blog_name').html(data.url);
                 });
-
 
                 g.innerHTML =
                     '<td>' + data.name + '</td>'
                     + '<td>' + data.url + '</td>';
-{#                    + '<td>' + data.id + '</td>';#}
-
                 $('#blogger_widget').append(g);
 
             }
 
+            function processDataAppend(data){
+                var g = document.createElement('tr');
+                g.id = data.id;
+                g.value = data.url;
+                g.addEventListener("click", function(){
+                    switchColors(this.id);
+                    tableIndex = 1;
+                    displayPostsHeaders();
+                    requestAllBlogPosts(this.id);
+                    $('#blog_name').html(data.url);
+                });
+
+                g.innerHTML =
+                    '<td>' + data.name + '</td>'
+                    + '<td>' + data.url + '</td>';
+                $('#blogger_widget').append(g);
+
+            }
 
             function switchColors(id){
                 $('#'+id).children('td').css('background-color','#EBEBEB');
@@ -184,12 +178,24 @@
             }
 
             $(document).ready(function() {
-                var url = '{{ search }}';
-                url = url.replace("&amp;", "&");
+                displayHeaders();
                 displayPostsHeaders();
 
-                //requestUserId('https://www.googleapis.com/blogger/v3/blogs/byurl?url=http://haleyyew.blogspot.ca/&key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw');
-                requestUserId(url);
+                var url = '{{ search }}';
+                url = url.replace("&amp;", "&");
+
+                var url_string_array = url.split(",");
+                var url_request = url_string_array[0].trim();
+                url_request = 'https://www.googleapis.com/blogger/v3/blogs/byurl?url='+url_request+'&key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw';
+                requestUserId(url_request);
+
+                if (url_string_array.length > 1){
+                    for (i = 1; i < url_string_array.length; i++) {
+                        url_request = url_string_array[i].trim();
+                        url_request = 'https://www.googleapis.com/blogger/v3/blogs/byurl?url='+url_request+'&key=AIzaSyBVfRXsS2J63CmmGbf3_vJin_Nk_3atSPw';
+                        requestUserIdAppend(url_request);
+                    }
+                }
 
             });
         </script>
@@ -216,12 +222,10 @@
 
     </head>
 
-
-
     <body>
         <a href="/">Home</a>
         <h1>Blog Rater</h1>
-        <A NAME="top_page">
+        <A NAME="top_page"></A>
         <strong>{{ boldmessage }}</strong><br />
         <form method="get" action="/blograter/">
             <input id="textbox" name="url" type="text" size='100' value=
@@ -232,15 +236,13 @@
         Blog info:<br>
         <table id = "blogger_widget">
         </table>
-        <br>All posts of blog:<br>
+        <br>All posts of blog <a id="blog_name"></a>:<br>
         <table id = "user_posts">
         </table>
-        <br>Post Content:<br>
+        <br>Post content of <a id="post_name"></a>:<br>
         <table id = "blog_post">
         </table>
         <A HREF="#top_page">Back to the top</A>
-
-
 
     </body>
 

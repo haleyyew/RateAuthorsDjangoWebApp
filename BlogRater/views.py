@@ -3,7 +3,7 @@ from BlogRater.models import Author
 
 def index(request):
     # return HttpResponse("Hey There!")
-    context_dict = {'boldmessage': "Please search for a blog by entering its url. Then select the blog to view all posts. Click on one of the posts to rate the author of that post.",
+    context_dict = {'boldmessage': "Please search for a blog by entering its url and view all posts. Click on one of the posts to view the content of that post. Then click on \"View Rating\" to rate the author of that post.",
                     'search': request.GET['url']
                     }
     return render(request, 'BlogRater/index.html', context_dict)
