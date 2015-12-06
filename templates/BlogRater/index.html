@@ -1,9 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
 
-<!DOCTYPE html>
-<html>
+{% block title %}RateAuthors{% endblock %}
+{% block body_block %}
 
-    <head>
-        <title>RateAuthors - Blog Rater</title>
+    <div class="page-header">
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
@@ -220,10 +221,7 @@
             }
         </style>
 
-    </head>
-
-    <body>
-        <a href="/">Home</a>
+{#        <a href="/">Home</a>#}
         <h1>Blog Rater</h1>
         <A NAME="top_page"></A>
         <strong>{{ boldmessage }}</strong><br />
@@ -244,6 +242,6 @@
         </table>
         <A HREF="#top_page">Back to the top</A>
 
-    </body>
+    </div>
 
-</html>
+{% endblock %}

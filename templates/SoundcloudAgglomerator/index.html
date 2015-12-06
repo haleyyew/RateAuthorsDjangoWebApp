@@ -1,12 +1,10 @@
-
-<!DOCTYPE html>
-
+{% extends 'base.html' %}
 {% load static %}
 
-<html>
+{% block title %}RateAuthors{% endblock %}
+{% block body_block %}
 
-    <head>
-        <title>RateAuthors - SoundCloud Tracks Agglomerator</title>
+    <div class="page-header">
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="https://connect.soundcloud.com/sdk.js"></script>
@@ -20,6 +18,10 @@
             var colouredItem = null;
             var enableButtons = 0;
             var enableButtonsThreshold = 0;
+
+            $(document).ready(function() {
+                loadData();
+            });
 
             function embed (url) {
               SC.oEmbed(url
@@ -182,38 +184,12 @@
                 }
             }
 
-            $(document).ready(function() {
-                loadData();
-            });
+
 
         </script>
 
 
-        <style>
-            body {
-                background-color: #ecf8fb;
-{#                background-image: url("https://cdn0.iconfinder.com/data/icons/ie_Bright/512/sound_music_itunes_green.png");#}
-{#                background-repeat: no-repeat;#}
-            }
-            table {
-                border-collapse: collapse;
-            }
-            table, th, td {
-                border: 1px solid black;
-            }
-            td {
-                cursor: pointer
-            }
-            tr:hover {
-              color: #3176ff;
-              background-color: beige ;
-            }
-        </style>
-
-    </head>
-
-    <body>
-        <a href="/">Home</a><h1>SoundCloud Tracks Agglomerator</h1>
+        <h1>SoundCloud Tracks Agglomerator</h1>
         <strong>{{ boldmessage }}</strong><br />
 
 
@@ -232,8 +208,6 @@
         <table id = "soundcloud_widget">
         </table>
 
-{#        <img src="{% static "images/sound_music_itunes_blue.png" %}" alt="MusicIcon" />#}
+    </div>
 
-    </body>
-
-</html>
+{% endblock %}
