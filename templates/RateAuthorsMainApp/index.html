@@ -1,36 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
 
-<!DOCTYPE html>
-<html>
+{% block title %}RateAuthors{% endblock %}
+{% block body_block %}
 
-    <head>
-        <title>RateAuthors</title>
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-
-        <script>
-        </script>
-
-        <style>
-            body {
-                background-color: #ecf8fb;
-            }
-
-        </style>
-
-    </head>
-
-    <body>
+    <div class="page-header">
         <h1>Hello Raters!</h1>
-        <strong>{{ boldmessage }}</strong><br />
+        <strong>{{ boldmessage }}</strong><br /><br />
+
+
+        <img src="{% static "images/seo3-39-512.png" %}" height="42" width="42" alt="BlogIcon" />
         Blog Rater<br />
+
+        Please enter the url of a SoundCloud user to load all tracks from SoundCloud. Then click "View Author Ratings"
         <form method="get" action="/blograter/">
             <input id="textbox" name="url" type="text" size='100' value=
                 'http://haleyyew.blogspot.ca/,http://haleyyew-singsong.blogspot.ca/'>
             <input type="submit" class="btn" value="View Author Ratings" >
         </form>
 
+        <br />
+        <img src="{% static "images/sound_music_itunes_blue.png" %}" height="42" width="42" alt="MusicIcon" />
         SoundCloud Tracks Agglomerator<br />
 
+        Please search for a Blogger.com blog by entering its url to view all posts. Then click "Load Tracks"
         <form method="get" action="/soundcloud/">
             <input id="textbox" name="urls" type="text" size='100' value=
                    'http://soundcloud.com/haoran-yu-1,http://soundcloud.com/haoran-yu-2,http://soundcloud.com/haoran-yu-3,http://soundcloud.com/haoran-yu-4,http://soundcloud.com/haoran-yu-5'
@@ -38,6 +31,7 @@
             <input type="submit" class="btn" value="Load Tracks" >
         </form>
 
-    </body>
 
-</html>
+    </div>
+
+{% endblock %}
