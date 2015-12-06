@@ -109,7 +109,7 @@
                     '<form action="/blograter/get_author/" method="get" id="form1">'+
                             '<input type="hidden" name="id" value='+ g.value+'>'+
                             '<input type="hidden" name="name" value='+ data.items[0].author.displayName+'>'+
-                    '<input type="submit" class="btn" value="View Ratings" >'+
+                    '<input type="submit" class="btn btn-info btn-xs" value="View Ratings" >'+
                     '</form>';
 
                     var published = post.published;
@@ -202,43 +202,43 @@
         </script>
 
 
-        <style>
-            body {
-                background-color: #ecf8fb;
-            }
-            table {
-                border-collapse: collapse;
-            }
-            table, th, td {
-                border: 1px solid black;
-            }
-            td {
-                cursor: pointer
-            }
-            tr:hover {
-              color: #3176ff;
-              background-color: beige ;
-            }
-        </style>
+{#        <style>#}
+{#            body {#}
+{#                background-color: #ecf8fb;#}
+{#            }#}
+{#            table {#}
+{#                border-collapse: collapse;#}
+{#            }#}
+{#            table, th, td {#}
+{#                border: 1px solid black;#}
+{#            }#}
+{#            td {#}
+{#                cursor: pointer#}
+{#            }#}
+{#            tr:hover {#}
+{#              color: #3176ff;#}
+{#              background-color: beige ;#}
+{#            }#}
+{#        </style>#}
 
 {#        <a href="/">Home</a>#}
-        <h1>Blog Rater</h1>
+        <h3>Blog Rater</h3>
         <A NAME="top_page"></A>
         <strong>{{ boldmessage }}</strong><br />
         <form method="get" action="/blograter/">
             <input id="textbox" name="url" type="text" size='100' value=
                 '{{ search }}'>
-            <input type="submit" class="btn" value="View Author Ratings" >
+            <input type="submit" class="btn btn-info btn-xs" value="View Author Ratings" >
         </form>
 
-        Blog info:<br>
-        <table id = "blogger_widget">
+        <br>Blog info:<br>
+        <table id = "blogger_widget" class="table table-bordered table-condensed">
         </table>
-        <br>All posts of blog <a id="blog_name"></a>:<br>
-        <table id = "user_posts">
+        All posts of blog <a id="blog_name"></a>:<br>
+        <table id = "user_posts" class="table table-bordered table-condensed">
         </table>
-        <br>Post content of <a id="post_name"></a>:<br>
-        <table id = "blog_post">
+        Post content of <a id="post_name"></a>:<br>
+        <table id = "blog_post" class="table table-bordered table-condensed">
         </table>
         <A HREF="#top_page">Back to the top</A>
 

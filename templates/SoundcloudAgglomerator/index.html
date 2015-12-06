@@ -189,23 +189,26 @@
         </script>
 
 
-        <h1>SoundCloud Tracks Agglomerator</h1>
+        <h3>SoundCloud Tracks Agglomerator</h3>
         <strong>{{ boldmessage }}</strong><br />
 
 
         <input id="textbox" type="text" size='100' value='{{ search }}'>
-        <button id="load_data" onclick="loadData()">Load Tracks</button>
+        <button id="load_data" class="btn btn-info btn-xs" onclick="loadData()">Load Tracks</button>
 
-        <br>You are viewing tracks from SoundCloud users: <div id="response"></div>
+        <div class="form-group">
+            <br>You are viewing tracks from SoundCloud users with id: <div id="response"></div>
+        </div>
+
 
         <div id="player"></div>
 
-        <button id="sort_by_title" onclick="sortAndDisplayTracksByTitle(all_tracks)" disabled>Sort By Title</button>
-        <button id="sort_by_play_count" onclick="sortAndDisplayTracks(all_tracks)" disabled>Sort By Play Count</button>
-        <button id="sort_by_upload_date" onclick="sortAndDisplayTracksByDate(all_tracks)" disabled>Sort By Upload Date</button>
-        <button id="total_play_count" onclick="totalPlayCount(all_tracks)" disabled>Total Play Count</button>
+        <button id="sort_by_title" class="btn btn-info btn-xs" onclick="sortAndDisplayTracksByTitle(all_tracks)" disabled>Sort By Title</button>
+        <button id="sort_by_play_count" class="btn btn-info btn-xs" onclick="sortAndDisplayTracks(all_tracks)" disabled>Sort By Play Count</button>
+        <button id="sort_by_upload_date" class="btn btn-info btn-xs" onclick="sortAndDisplayTracksByDate(all_tracks)" disabled>Sort By Upload Date</button>
+        <button id="total_play_count" class="btn btn-info btn-xs" onclick="totalPlayCount(all_tracks)" disabled>Total Play Count</button>
 
-        <table id = "soundcloud_widget">
+        <table id = "soundcloud_widget" class="table table-bordered table-condensed">
         </table>
 
     </div>

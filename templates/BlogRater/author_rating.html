@@ -26,7 +26,7 @@
                         '<input type="hidden" name="id" value="{{ author_id }}">'+
                         '<input type="hidden" name="name" value="{{ author_name }}">'+
                         '<input type="hidden" name="add" value="true">'+
-                '<input type="submit" class="btn" value="+1" >'+
+                '<input type="submit" class="btn btn-info btn-xs" value="+1" >'+
                 '</form>';
 
                 var table =
@@ -52,10 +52,10 @@
 
         <h1>Blog Rater</h1>
         <br>Rate this author:<br>
-        <table id = "blogger_user">
+        <table id = "blogger_user" class="table table-bordered table-condensed">
         </table>
         Listed below are all authors stored in our database:
-        <table id = "all_authors">
+        <table id = "all_authors" class="table table-bordered table-condensed">
             {% for a in list_of_all_authors %}
                 <tr id={{ a.id }} class='a'>
                 <td>{{ a.name }}</td>
