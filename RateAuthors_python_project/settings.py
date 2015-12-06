@@ -102,35 +102,39 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 
-STATIC_PATH = os.path.join(BASE_DIR,'static')
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    STATIC_PATH,
-)
 
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.core.context_processors.request',
-                'django.contrib.messages.context_processors.messages',
+# STATIC_PATH = os.path.join(BASE_DIR,'static')
+#
+# STATIC_URL = '/static/'
+#
+# STATICFILES_DIRS = (
+#     STATIC_PATH,
+# )
+#
+#
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [os.path.join(BASE_DIR, 'templates')],
+#         'APP_DIRS': True,
+#         'OPTIONS': {
+#             'context_processors': [
+#                 'django.template.context_processors.debug',
+#                 'django.template.context_processors.request',
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.core.context_processors.request',
+#                 'django.contrib.messages.context_processors.messages',
+#
+#             ],
+#         },
+#     },
+# ]
 
-            ],
-        },
-    },
-]
+
 
 # git clone https://haleyyew:?@github.com/haleyyew/personal_proj3.git
 
-# STATICFILES_DIRS = ('/home/haleyyew/personal_proj3/static',)
+STATICFILES_DIRS = ('/home/haleyyew/personal_proj3/static',)
 
-# TEMPLATE_DIRS = ('/home/haleyyew/personal_proj3/templates',)
+TEMPLATE_DIRS = ('/home/haleyyew/personal_proj3/templates',)
