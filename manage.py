@@ -18,7 +18,7 @@ if __name__ == "__main__":
 #
 # workflow on deployment:
 # workon rater
-# mv personal_proj3 personal_proj3.9.5
+# mv personal_proj3 personal_proj3.9.6
 # git clone https://haleyyew:HHYYbbyy920617_@github.com/haleyyew/personal_proj3.git
 # cd personal_proj3
 # python manage.py makemigrations BlogRater
