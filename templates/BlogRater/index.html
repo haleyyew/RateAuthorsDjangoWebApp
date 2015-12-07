@@ -102,7 +102,7 @@
                         switchColors(this.id);
                         getPost(this.url, this.id);
                         document.getElementById("blog_post").scrollIntoView();
-                        $('#post_name').html(this.uri);
+                        $('#post_name').html('Post content of '+ this.uri);
                     });
 
                     var button =
@@ -237,7 +237,7 @@
         All posts of blog <a id="blog_name"></a>:<br>
         <table id = "user_posts" class="table table-bordered table-condensed">
         </table>
-        Post content of <a id="post_name"></a>:<br>
+        <a id="post_name"></a><br>
         <table id = "blog_post" class="table table-bordered table-condensed">
         </table>
         <A HREF="#top_page">Back to the top</A>

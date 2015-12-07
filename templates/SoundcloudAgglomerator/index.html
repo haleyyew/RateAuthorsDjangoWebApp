@@ -158,7 +158,16 @@
             }
 
             function processData(data) {
-                $('#response').append(data.id + ", ");
+                var image = document.createElement('img');
+                    image.src = data.avatar_url;
+                    image.height = 12;
+                    image.width = 12;
+
+                    var tmp = document.createElement("div");
+                    tmp.appendChild(image);
+
+
+                $('#response').append(tmp.innerHTML+data.username + " ("+data.id+")" + "   ");
                 enableButtonsThreshold += data.track_count;
                 loadAllTracks(data.id);
             }
